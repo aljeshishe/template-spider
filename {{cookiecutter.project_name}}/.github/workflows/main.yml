@@ -39,9 +39,11 @@ jobs:
     - name: Test code
       run: make test
 
-    - name: Upload coverage
-      uses: codecov/codecov-action@v1
-      with:
-        fail_ci_if_error: true
+# commented because of error
+# Could not find a repository, try using repo upload token
+#    - name: Upload coverage
+#      uses: codecov/codecov-action@v1
+#      with:
+#        fail_ci_if_error: true
 
 {%- endraw %}
