@@ -2,6 +2,16 @@ PROJECT := {{cookiecutter.project_name}}
 PACKAGE := {{cookiecutter.package_name}}
 MODULES := $(wildcard $(PACKAGE)/*.py)
 
+.PHONY: repo-init
+repo-init:
+	git init
+	git add .
+	git commit -m "initial commit"
+	git remote add origin git@github.com:{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.git
+	gh repo create {{cookiecutter.github_username}}/{{cookiecutter.project_name}} --public
+	git push -u origin master
+
+
 # MAIN TASKS ##################################################################
 
 .PHONY: all
