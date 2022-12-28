@@ -1,11 +1,11 @@
 {
-    "full_name": "Your Name",
-    "email": "you@yourdomain.com",
-    "github_username": "jacebrowning",
-    "github_repo": "template-python-demo",
+    "full_name": "Aleksei Grachev",
+    "email": "aljeshishe@gmail.com",
+    "github_username": "aljeshishe",
+    "github_repo": "library_name",
     "default_branch": "main",
-    "project_name": "TemplateDemo",
-    "package_name": "demo",
+    "project_name": "{{ cookiecutter.github_repo }}",
+    "package_name": "{{ cookiecutter.github_repo }}",
     "project_short_description": "Sample project generated from Jace's Python Template.",
     "python_major_version": 3,
     "python_minor_version": 11
