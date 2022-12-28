@@ -14,10 +14,10 @@ else:
     notify = Notifier.notify
 
 
-watch_paths = ['.']
+watch_paths = ["."]
 
 
-@select_runnable('python')
+@select_runnable("python")
 @file_validator
 def py_files(filename):
     return "TemplateDemo" not in filename
@@ -29,12 +29,12 @@ def python(*_):
     group = int(time.time())  # unique per run
 
     for count, (command, title) in enumerate((
-        (('make', 'build'), "Generate Sample"),
-        (('make', 'ci'), "Test Sample"),
+        (("make", "build"), "Generate Sample"),
+        (("make", "ci"), "Test Sample"),
     ), start=1):
 
         print("")
-        print("$ %s" % ' '.join(command))
+        print("$ %s" % " ".join(command))
         failure = subprocess.call(command)
 
         if failure:
