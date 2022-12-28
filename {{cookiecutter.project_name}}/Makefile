@@ -72,9 +72,9 @@ format: install
 
 .PHONY: check
 check: install format  ## Run formaters, linters, and static analysis
-ifdef CI
-	git diff --exit-code
-endif
+#ifdef CI
+#	git diff --exit-code
+#endif
 	poetry run mypy $(PACKAGE) tests
 	poetry run pylint $(PACKAGE) tests --rcfile=.pylint.ini
 	poetry run pydocstyle $(PACKAGE) tests
