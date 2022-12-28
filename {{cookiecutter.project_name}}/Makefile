@@ -48,15 +48,16 @@ install: $(DEPENDENCIES) .cache
 
 $(DEPENDENCIES): poetry.lock
 	@ rm -rf $(VIRTUAL_ENV)/.poetry-*
+	@ mkdir -p $(VIRTUAL_ENV)
 	@ poetry config virtualenvs.in-project true
 	poetry install
 	@ touch $@
 
-ifndef CI
+# ifndef CI
 poetry.lock: pyproject.toml
 	poetry lock --no-update
 	@ touch $@
-endif
+# endif
 
 .cache:
 	@ mkdir -p .cache
