@@ -96,4 +96,4 @@ REQUEST_RESPONSE_BODY_DEBUG = False
 # Set settings whose default value is deprecated to a future-proof value
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
-PARAMS = {}  # pylint: disable=var-annotated
+PARAMS = {}  # type: ignore[var-annotated]
