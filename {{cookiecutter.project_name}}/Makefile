@@ -10,16 +10,14 @@ repo-init:
 	git init
 	git add .
 	git commit -m "initial commit"
-	#ifdef CI
-	#	git diff --exit-code
-	#endif
-	if [[ "$$GH_TOKEN" != "" ]]; then \
-		echo "Adding remote with GH_TOKEN"; \
-		git remote add origin https://$$GH_TOKEN@github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.git; \
-	else \
-		echo "Adding remote with SSH"; \
-		git remote add origin git@github.com:{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.git; \
-	fi
+ifdef CI
+	echo "Adding remote with $$GH_TOKEN";
+	git config --global user.email "you@example.com"
+	git config --global user.name "Your Name"
+	git remote add origin https://$$GH_TOKEN@github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.git;
+else
+	git remote add origin git@github.com:{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.git;
+endif
 	gh repo create {{cookiecutter.github_username}}/{{cookiecutter.project_name}} --public
 	git push -u origin master
 
