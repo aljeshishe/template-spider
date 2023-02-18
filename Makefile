@@ -3,6 +3,13 @@ GENERATED_PROJECT := template_python_test_repo
 
 ENV := .venv
 
+# disable less in gh
+PAGER=
+export PAGER
+
+# disable commands output
+.SILENT:
+
 .PHONY: all
 all: install
 
@@ -14,10 +21,41 @@ doctor:  ## Confirm system dependencies are available
 
 .PHONY: ci
 ci:
-	rm -rf $(GENERATED_PROJECT)
+	$(MAKE) ci-cleanup
+
 	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
-	cd $(GENERATED_PROJECT) && make repo-init
-	# gh repo delete $(GENERATED_PROJECT) --confirm
+	make -C $(GENERATED_PROJECT) repo-init
+	$(MAKE) ci-wait-complete
+	$(MAKE) ci-check-conclusion
+
+	$(MAKE) ci-cleanup
+
+ci-check-conclusion:
+	cd $(GENERATED_PROJECT) && \
+	CONCLUSION=$$(gh run list --json conclusion -q '.[0].conclusion') && \
+	echo "CI to completed with status: $$CONCLUSION" && \
+	if [[ $$CONCLUSION != "success" ]]; then \
+		echo "CI FAIL"; \
+		exit 1; \
+	else \
+		echo "CI PASS"; \
+	fi
+
+ci-wait-complete:
+	cd $(GENERATED_PROJECT) && \
+	echo "Waiting for CI to complete..." && \
+	while True; do \
+		gh run list --json status,conclusion; \
+		if [[ "$$(gh run list --json status -q '.[0].status')" == "completed" ]]; then \
+			break; \
+		fi \
+	done
+
+ci-cleanup:
+	# remove project dir if left
+	rm -rf $(GENERATED_PROJECT) ; gh repo delete $(GENERATED_PROJECT) --confirm; true
+	# remove project repo if left
+
 
 .PHONY: dev
 dev: install clean
