@@ -2,12 +2,15 @@ PROJECT := {{cookiecutter.project_name}}
 PACKAGE := {{cookiecutter.package_name}}
 MODULES := $(wildcard $(PACKAGE)/*.py)
 
+SHELL := /bin/bash
+
+
 .PHONY: repo-init
 repo-init:
 	git init
 	git add .
 	git commit -m "initial commit"
-	if [ [ "$$GH_TOKEN" != "" ] ]; then \
+	if [[ "$$GH_TOKEN" != "" ]]; then \
 		echo "Adding remote with GH_TOKEN"; \
 		git remote add origin https://$$GH_TOKEN@github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.git; \
 	else \
