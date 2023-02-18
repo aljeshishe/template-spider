@@ -26,7 +26,7 @@ ci:
 	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
 	git config --global user.email "you@example.com"
 	git config --global user.name "Your Name"
-  	make -C $(GENERATED_PROJECT) repo-init
+	make -C $(GENERATED_PROJECT) repo-init
 	$(MAKE) ci-wait-complete
 	$(MAKE) ci-check-conclusion
 
