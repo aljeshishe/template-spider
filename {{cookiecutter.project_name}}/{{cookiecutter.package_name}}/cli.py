@@ -1,21 +1,20 @@
-"""A sample CLI."""
+import os
 
 import click
-import log
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
 
-from . import utils
+from {{cookiecutter.package_name}} import spider
 
 
 @click.command()
-@click.argument("feet")
-def main(feet: str):
-    log.init()
-
-    meters = utils.feet_to_meters(feet)
-
-    if meters is not None:
-        click.echo(meters)
+def main():
+    os.environ["SCRAPY_SETTINGS_MODULE"] = "{{cookiecutter.package_name}}.settings"
+    process = CrawlerProcess(settings=get_project_settings())
+    process.crawl(spider.Spider)
+    process.start()
 
 
 if __name__ == "__main__":  # pragma: no cover
     main()  # pylint: disable=no-value-for-parameter
+# 3 455 725 343
