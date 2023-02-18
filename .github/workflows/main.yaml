@@ -4,7 +4,8 @@ on: [push]
 
 jobs:
   build:
-
+    environment:
+      name: dev
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -32,7 +33,7 @@ jobs:
       run: make install
 
     - name: Run ci
-      run: echo ${{ dev.MYVAR }} && make ci
+      run: echo ${{ env.MYVAR }} && make ci
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
