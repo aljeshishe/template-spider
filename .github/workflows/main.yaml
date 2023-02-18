@@ -32,7 +32,7 @@ jobs:
       run: make install
 
     - name: Run ci
-      run: echo ${GH_TOKEN} && make ci
+      run: echo ${{ env.MYVAR }} && make ci
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
