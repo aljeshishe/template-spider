@@ -29,6 +29,9 @@ jobs:
         key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
 
     - name: Install dependencies
+      run: make install
+
+    - name: Run ci
       run: make ci
 
 #    - name: Check code
