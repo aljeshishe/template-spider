@@ -21,6 +21,9 @@ jobs:
 
     - uses: Gr1N/setup-poetry@v7
 
+    - name: test var
+      run: echo ${{ env.MYVAR }} || true
+
     - name: Check dependencies
       run: make doctor
 
@@ -33,9 +36,10 @@ jobs:
       run: make install
 
     - name: Run ci
-      run: echo ${{ env.MYVAR }} && make ci
+      run: make ci
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
 #    - name: Check code
 #      run: make check
