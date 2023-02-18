@@ -1,5 +1,5 @@
 SOURCE_FILES = Makefile cookiecutter.json {{cookiecutter.project_name}}/* {{cookiecutter.project_name}}/*/*
-GENERATED_PROJECT := template_python_test_repo
+GENERATED_PROJECT := template_spider_test_repo
 
 SHELL := /bin/bash
 
@@ -90,14 +90,16 @@ endif
 # BUILD #######################################################################
 
 .PHONY: build
-build: install $(GENERATED_PROJECT)
-$(GENERATED_PROJECT): $(SOURCE_FILES)
+build: install
 	cat cookiecutter.json
-	poetry run cookiecutter . --no-input --overwrite-if-exists
-ifndef CI
-endif
-	cd $(GENERATED_PROJECT) && poetry lock --no-update
-	@ touch $(GENERATED_PROJECT)
+	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
+
+# $(GENERATED_PROJECT): $(SOURCE_FILES)
+$(GENERATED_PROJECT):
+#ifndef CI
+#endif
+#	cd $(GENERATED_PROJECT) && poetry lock --no-update
+#	@ touch $(GENERATED_PROJECT)
 
 # CLEANUP #####################################################################
 
