@@ -47,11 +47,15 @@ ci-wait-complete:
 	cd $(GENERATED_PROJECT) && \
 	echo "Waiting for $(GENERATED_PROJECT) ci to complete..." && \
 	while true; do \
-		gh run list --json status,conclusion; \
-		if [[ "$$(gh run list --json status -q '.[0].status')" == "completed" ]]; then \
+		RESULT=$$(gh run list --json status,conclusion); \
+		STATUS=$$(echo "$$RESULT" | jq -r '.[0].status'); \
+		CONCLUSION=$$(echo "$$RESULT" | jq -r '.[0].conclusion'); \
+		echo status=$$STATUS conclusion=$$CONCLUSION; \
+		if [[ "$$STATUS" == "completed" ]]; then \
 			break; \
-		fi \
-	done
+		fi; \
+		sleep 5; \
+	done;
 
 ci-cleanup:
 	# remove project repo if left
