@@ -1,5 +1,5 @@
 SOURCE_FILES = Makefile cookiecutter.json {{cookiecutter.project_name}}/* {{cookiecutter.project_name}}/*/*
-GENERATED_PROJECT := TemplateDemo
+GENERATED_PROJECT := template_python_test_repo
 
 ENV := .venv
 
@@ -13,8 +13,10 @@ doctor:  ## Confirm system dependencies are available
 # MAIN ########################################################################
 
 .PHONY: ci
-ci: build
-	make ci -C $(GENERATED_PROJECT)
+ci:
+	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
+	cd $(GENERATED_PROJECT) && make repo-init
+	gh repo delete $(GENERATED_PROJECT) --confirm
 
 .PHONY: dev
 dev: install clean
@@ -47,8 +49,6 @@ $(GENERATED_PROJECT): $(SOURCE_FILES)
 	cat cookiecutter.json
 	poetry run cookiecutter . --no-input --overwrite-if-exists
 ifndef CI
-	mkdir -p $(GENERATED_PROJECT)/.git
-	echo '[remote "origin"]\nurl = https://github.com/jacebrowning/template-python-demo' > $(GENERATED_PROJECT)/.git/config
 endif
 	cd $(GENERATED_PROJECT) && poetry lock --no-update
 	@ touch $(GENERATED_PROJECT)
