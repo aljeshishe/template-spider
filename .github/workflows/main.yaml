@@ -1,6 +1,8 @@
 name: main
 
 on: [push]
+env:
+   GH_TOKEN: ${{ github.token }}
 
 jobs:
   build:
