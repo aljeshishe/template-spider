@@ -1,8 +1,6 @@
 name: main
 
 on: [push]
-env:
-  GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
   build:
@@ -34,7 +32,9 @@ jobs:
       run: make install
 
     - name: Run ci
-      run: make ci
+      run: echo ${GH_TOKEN} && make ci
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 #    - name: Check code
 #      run: make check
