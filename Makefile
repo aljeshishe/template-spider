@@ -24,7 +24,9 @@ ci:
 	$(MAKE) ci-cleanup
 
 	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
-	make -C $(GENERATED_PROJECT) repo-init
+	git config --global user.email "you@example.com"
+	git config --global user.name "Your Name"
+  	make -C $(GENERATED_PROJECT) repo-init
 	$(MAKE) ci-wait-complete
 	$(MAKE) ci-check-conclusion
 
@@ -33,17 +35,17 @@ ci:
 ci-check-conclusion:
 	cd $(GENERATED_PROJECT) && \
 	CONCLUSION=$$(gh run list --json conclusion -q '.[0].conclusion') && \
-	echo "CI to completed with status: $$CONCLUSION" && \
+	echo "$(GENERATED_PROJECT) ci completed with status: $$CONCLUSION" && \
 	if [[ $$CONCLUSION != "success" ]]; then \
-		echo "CI FAIL"; \
+		echo "FAIL"; \
 		exit 1; \
 	else \
-		echo "CI PASS"; \
+		echo "PASS"; \
 	fi
 
 ci-wait-complete:
 	cd $(GENERATED_PROJECT) && \
-	echo "Waiting for CI to complete..." && \
+	echo "Waiting for $(GENERATED_PROJECT) ci to complete..." && \
 	while True; do \
 		gh run list --json status,conclusion; \
 		if [[ "$$(gh run list --json status -q '.[0].status')" == "completed" ]]; then \
