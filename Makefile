@@ -14,9 +14,10 @@ doctor:  ## Confirm system dependencies are available
 
 .PHONY: ci
 ci:
+	rm -rf $(GENERATED_PROJECT)
 	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
 	cd $(GENERATED_PROJECT) && make repo-init
-	gh repo delete $(GENERATED_PROJECT) --confirm
+	# gh repo delete $(GENERATED_PROJECT) --confirm
 
 .PHONY: dev
 dev: install clean
