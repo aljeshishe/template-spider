@@ -1,6 +1,8 @@
 SOURCE_FILES = Makefile cookiecutter.json {{cookiecutter.project_name}}/* {{cookiecutter.project_name}}/*/*
 GENERATED_PROJECT := template_python_test_repo
 
+SHELL := /bin/bash
+
 ENV := .venv
 
 # disable less in gh
