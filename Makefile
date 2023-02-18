@@ -48,7 +48,7 @@ ci-check-conclusion:
 ci-wait-complete:
 	cd $(GENERATED_PROJECT) && \
 	echo "Waiting for $(GENERATED_PROJECT) ci to complete..." && \
-	while True; do \
+	while true; do \
 		gh run list --json status,conclusion; \
 		if [[ "$$(gh run list --json status -q '.[0].status')" == "completed" ]]; then \
 			break; \

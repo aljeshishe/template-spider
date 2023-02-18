@@ -10,6 +10,9 @@ repo-init:
 	git init
 	git add .
 	git commit -m "initial commit"
+	#ifdef CI
+	#	git diff --exit-code
+	#endif
 	if [[ "$$GH_TOKEN" != "" ]]; then \
 		echo "Adding remote with GH_TOKEN"; \
 		git remote add origin https://$$GH_TOKEN@github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.git; \
