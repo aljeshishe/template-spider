@@ -54,9 +54,10 @@ ci-wait-complete:
 	done
 
 ci-cleanup:
-	# remove project dir if left
-	rm -rf $(GENERATED_PROJECT) ; gh repo delete $(GENERATED_PROJECT) --confirm; true
 	# remove project repo if left
+	gh repo view  $(GENERATED_PROJECT) > /dev/null 2>&1 && gh repo delete $(GENERATED_PROJECT) --confirm || true
+	# remove project dir if left
+	[ -d "$(GENERATED_PROJECT)" ] && rm -rf $(GENERATED_PROJECT)  || true
 
 
 .PHONY: dev

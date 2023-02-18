@@ -8,8 +8,6 @@ SHELL := /bin/bash
 .PHONY: repo-init
 repo-init:
 	git init
-	git add .
-	git commit -m "initial commit"
 ifdef CI
 	echo "Adding remote with $$GH_TOKEN";
 	git config --global user.email "you@example.com"
@@ -18,6 +16,8 @@ ifdef CI
 else
 	git remote add origin git@github.com:{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.git;
 endif
+	git add .
+	git commit -m "initial commit"
 	gh repo create {{cookiecutter.github_username}}/{{cookiecutter.project_name}} --public
 	git push -u origin master
 
