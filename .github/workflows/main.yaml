@@ -1,9 +1,8 @@
 name: main
 
 on: [push]
-#env:
-#  GH_TOKEN: ${{ secrets.GH_TOKEN }}
-#  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
   build:
