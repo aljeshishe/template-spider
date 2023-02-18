@@ -1,6 +1,9 @@
 name: main
 
 on: [push]
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
   build:
@@ -22,7 +25,7 @@ jobs:
     - uses: Gr1N/setup-poetry@v7
 
     - name: test var
-      run: echo ${{ env.MYVAR }} || true
+      run: printenv | sort && echo ${{ env.MYVAR }} || true
 
     - name: Check dependencies
       run: make doctor
@@ -37,9 +40,6 @@ jobs:
 
     - name: Run ci
       run: make ci
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
 #    - name: Check code
 #      run: make check
