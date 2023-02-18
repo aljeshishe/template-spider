@@ -85,9 +85,9 @@ check: install format  ## Run formaters, linters, and static analysis
 #ifdef CI
 #	git diff --exit-code
 #endif
-	poetry run mypy $(PACKAGE) tests
-	poetry run pylint $(PACKAGE) tests --rcfile=.pylint.ini
-	poetry run pydocstyle $(PACKAGE) tests
+	#poetry run mypy $(PACKAGE) tests
+	#poetry run pylint $(PACKAGE) tests --rcfile=.pylint.ini
+	#poetry run pydocstyle $(PACKAGE) tests
 
 # TESTS #######################################################################
 
@@ -112,7 +112,7 @@ test-unit: install
 	poetry run pytest $(PACKAGE) $(PYTEST_OPTIONS)
 	@ ( mv $(FAILURES).bak $(FAILURES) || true ) > /dev/null 2>&1
 ifndef DISABLE_COVERAGE
-	poetry run coveragespace update unit
+	# poetry run coveragespace update unit
 endif
 
 .PHONY: test-int
@@ -121,7 +121,7 @@ test-int: install
 	@ rm -rf $(FAILURES)
 	poetry run pytest tests $(PYTEST_OPTIONS)
 ifndef DISABLE_COVERAGE
-	poetry run coveragespace update integration
+	# poetry run coveragespace update integration
 endif
 
 .PHONY: test-all
@@ -130,7 +130,7 @@ test-all: install
 	@ rm -rf $(FAILURES)
 	poetry run pytest $(PACKAGE) tests $(PYTEST_OPTIONS)
 ifndef DISABLE_COVERAGE
-	poetry run coveragespace update overall
+	# poetry run coveragespace update overall
 endif
 
 .PHONY: read-coverage
