@@ -23,18 +23,13 @@ class LoggingDownloaderMiddleware:
         body_debug = crawler.settings.get("REQUEST_RESPONSE_BODY_DEBUG", False)
         return cls(enabled=enabled, body_debug=body_debug)
 
-    def process_request(self, request: scrapy.Request, _: scrapy.Spider):
+    def process_request(self, request: scrapy.Request, *_, **__):
         self._sanitize(request=request)
         if self.enabled:
             content = request_httprepr(request, body=self.body_debug)
             log.debug("Request:\n%s", content)
 
-    def process_response(
-        self,
-        _: scrapy.Request,
-        response: scrapy.http.Response,
-        __: scrapy.Spider,
-    ):
+    def process_response(self, response: scrapy.http.Response, *_, **__):
         if self.enabled:
             content = response_httprepr(response, body=self.body_debug)
             log.debug("Reponse:\n%s", content)

@@ -1,3 +1,9 @@
+from pathlib import Path
+
+import rootpath
+
+ROOT_PATH = Path(rootpath.detect(__file__))
+
 LOG_LEVEL = "INFO"
 BOT_NAME = "spider"
 
@@ -26,7 +32,7 @@ LOGSTATS_INTERVAL = 20
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = "spider (+http://www.yourdomain.com)"
 FEEDS = {
-    "results/items_%(time)s.json": {"format": "jsonl"},
+    ROOT_PATH / "results/items_%(time)s.json": {"format": "jsonl"},
 }
 
 # Obey robots.txt rules

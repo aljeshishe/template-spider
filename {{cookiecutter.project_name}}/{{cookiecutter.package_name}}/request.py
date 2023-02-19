@@ -1,18 +1,15 @@
 import logging
-from datetime import datetime
 from pathlib import Path
 
 import attr
 import rootpath
 import scrapy
 
+from {{cookiecutter.package_name}}.middlewares import errback
 from {{cookiecutter.package_name}}.state import State
 
-log = logging.getLogger(__name__)
-
-URL = "https://www.linkedin.com/graph"
-MAX_PAGE = 999
 ROOT_PATH = Path(rootpath.detect(__file__))
+logger = logging.getLogger(__name__)
 
 
 class RequestBase(scrapy.Request):
@@ -25,32 +22,18 @@ class RequestBase(scrapy.Request):
     __repr__ = __str__
 
 
-dt_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-
-
 @attr.define(eq=False)
-class GetJobRequest(RequestBase):
+class DestinationRequest(RequestBase):
     state: State
-    job_id: int
+    query: str
 
     def __attrs_post_init__(self):
-        url = f"https://www.linkedin.com/voyager/api/jobs/jobPostings/{self.job_id}?decorationId=com.linkedin.voyager.deco.jobs.web.shared.WebFullJobPosting-65&topN=1&topNRequestedFlavors=List(TOP_APPLICANT,IN_NETWORK,COMPANY_RECRUIT,SCHOOL_RECRUIT,HIDDEN_GEM,ACTIVELY_HIRING_COMPANY)"
+        url = f"https://www.onlinetours.ru/api/v1/destinations?query={self.query}"
+        logger.debug("New request url=%s", url)
         super().__init__(
-            url=url,
-            callback=self.parse,
-            headers=self.state.headers,
-            errback=self._on_error,
+            url=url, callback=self.parse, headers=self.state.headers, errback=errback
         )
 
-        self.path = ROOT_PATH / f"results/{dt_str}"
-        self.path.mkdir(parents=True, exist_ok=True)
-
     def parse(self, response: scrapy.http.Response):
-        (self.path / f"{self.job_id}.json").write_text(response.text)
-        with (self.path / "ids.csv").open(mode="a") as f:
-            f.write(f"{self.job_id}, {response.status}\n")
-
-    def _on_error(self, failure):
-        # middlewares.errback
-        with (self.path / "ids.csv").open(mode="a") as f:
-            f.write(f"{self.job_id}, {failure.value.response.status}\n")
+        for item in response.json():
+            yield item
