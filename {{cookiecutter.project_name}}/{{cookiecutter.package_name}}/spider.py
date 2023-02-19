@@ -1,6 +1,7 @@
 import logging
 
 import scrapy
+
 from {{cookiecutter.package_name}}.request import GetJobRequest
 from {{cookiecutter.package_name}}.state import State
 
@@ -17,7 +18,7 @@ class Spider(scrapy.Spider):
     def start_requests(self):
         start = 3472312310
         for i in range(0, 10000000):
-            i = int(1.1 ** i)
+            i = int(1.1**i)
             yield GetJobRequest(state=self.state, job_id=start - i)
             yield GetJobRequest(state=self.state, job_id=start + i)
 

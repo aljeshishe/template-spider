@@ -30,10 +30,10 @@ class LoggingDownloaderMiddleware:
             log.debug("Request:\n%s", content)
 
     def process_response(
-            self,
-            _: scrapy.Request,
-            response: scrapy.http.Response,
-            __: scrapy.Spider,
+        self,
+        _: scrapy.Request,
+        response: scrapy.http.Response,
+        __: scrapy.Spider,
     ):
         if self.enabled:
             content = response_httprepr(response, body=self.body_debug)
@@ -45,11 +45,10 @@ class LoggingDownloaderMiddleware:
             log.warning("Dont pass Content-Length header, it will be calculated automatically")
 
         encoding = request.headers.get("Accept-Encoding", "").decode()
-        compression_enabled = any(
-            tag in encoding for tag in ("gzip", "compress", "deflate", "br")
-        )
+        compression_enabled = any(tag in encoding for tag in ("gzip", "compress", "deflate", "br"))
         if compression_enabled and self.enabled and self.body_debug:
-            log.warning("Body compression (Accept-Encoding=%s) and printing body is enabled. Removing header", encoding)
+            msg = "Body compression (Accept-Encoding=%s) and printing body is enabled. Removing header"
+            log.warning(msg, encoding)
             del request.headers["Accept-Encoding"]
 
 

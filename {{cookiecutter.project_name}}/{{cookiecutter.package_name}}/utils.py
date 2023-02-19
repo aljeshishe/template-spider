@@ -7,7 +7,7 @@ import numpy as np
 
 
 def normalize(
-        d: Dict[str, Any], exceptions: list[Callable[[str, Any], bool]]
+    d: Dict[str, Any], exceptions: list[Callable[[str, Any], bool]]
 ) -> Dict[str, Any]:
     result = {}
 
