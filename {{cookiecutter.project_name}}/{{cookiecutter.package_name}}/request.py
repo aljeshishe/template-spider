@@ -1,13 +1,10 @@
 import logging
-import re
 from datetime import datetime
 from pathlib import Path
 
 import attr
 import rootpath
 import scrapy
-
-from {{cookiecutter.package_name}} import middlewares
 from {{cookiecutter.package_name}}.state import State
 
 log = logging.getLogger(__name__)

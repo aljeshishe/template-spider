@@ -4,7 +4,6 @@ from urllib.parse import urlunparse
 import attrs
 import scrapy
 from scrapy import Request
-from scrapy.exceptions import NotConfigured
 from scrapy.http import Response
 from scrapy.utils.httpobj import urlparse_cached
 from scrapy.utils.python import to_bytes
@@ -24,38 +23,33 @@ class LoggingDownloaderMiddleware:
         body_debug = crawler.settings.get("REQUEST_RESPONSE_BODY_DEBUG", False)
         return cls(enabled=enabled, body_debug=body_debug)
 
-    def process_request(self, request: scrapy.Request, spider: scrapy.Spider):
+    def process_request(self, request: scrapy.Request, _: scrapy.Spider):
         self._sanitize(request=request)
         if self.enabled:
-            repr = request_httprepr(request, body=self.body_debug)
-            log.debug(f"Request:\n{repr}")
-        return
+            content = request_httprepr(request, body=self.body_debug)
+            log.debug("Request:\n%s", content)
 
     def process_response(
-        self,
-        request: scrapy.Request,
-        response: scrapy.http.Response,
-        spider: scrapy.Spider,
+            self,
+            _: scrapy.Request,
+            response: scrapy.http.Response,
+            __: scrapy.Spider,
     ):
         if self.enabled:
-            repr = response_httprepr(response, body=self.body_debug)
-            log.debug(f"Reponse:\n{repr}")
+            content = response_httprepr(response, body=self.body_debug)
+            log.debug("Reponse:\n%s", content)
         return response
 
     def _sanitize(self, request: scrapy.Request):
         if "Content-Length" in request.headers:
-            log.warning(
-                f"Dont pass Content-Length header, it will be calculated automatically"
-            )
+            log.warning("Dont pass Content-Length header, it will be calculated automatically")
 
         encoding = request.headers.get("Accept-Encoding", "").decode()
         compression_enabled = any(
             tag in encoding for tag in ("gzip", "compress", "deflate", "br")
         )
         if compression_enabled and self.enabled and self.body_debug:
-            log.warning(
-                f"Body compression (Accept-Encoding={encoding}) and printing body is enabled. Removing header"
-            )
+            log.warning("Body compression (Accept-Encoding=%s) and printing body is enabled. Removing header", encoding)
             del request.headers["Accept-Encoding"]
 
 
@@ -98,8 +92,8 @@ def request_httprepr(request: Request, body: bool = False) -> str:
 
 def errback(failure):
     log.info(failure)
-    log.info("Request:\n" + request_httprepr(failure.request, body=True))
+    log.info("Request:\n%s", request_httprepr(failure.request, body=True))
     if response := getattr(failure.value, "response", None):
-        log.info("Reponse:\n" + response_httprepr(failure.value.response))
+        log.info("Response:\n%s", response_httprepr(response))
     else:
-        log.info("No reponseReponse:\n" + response_httprepr(failure.value.response))
+        log.info("No response")
