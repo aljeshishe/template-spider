@@ -21,8 +21,8 @@ doctor:  ## Confirm system dependencies are available
 
 # MAIN ########################################################################
 
-.PHONY: ci
-ci:
+.PHONY: github-ci
+github-ci:
 	$(MAKE) ci-cleanup
 
 	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
@@ -110,3 +110,17 @@ clean:
 .PHONY: clean-all
 clean-all: clean
 	rm -rf $(ENV)
+
+template-ci:
+	$(MAKE) -C $(GENERATED_PROJECT) ci
+
+start-dev:
+	cd $(GENERATED_PROJECT) && find . ! -name '.venv' -delete
+	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
+	cd $(GENERATED_PROJECT) && rm -rf .git && git init && git add . && git commit -m initial
+
+end-dev:
+	cd $(GENERATED_PROJECT) && git diff > ../patch
+	sed 's/template_spider_test_repo/{{cookiecutter.project_name}}/g' patch  > patch_fixed
+	git apply patch_fixed --directory \{\{cookiecutter.project_name\}\}
+

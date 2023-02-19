@@ -33,5 +33,5 @@ jobs:
     - name: Install dependencies
       run: make install
 
-    - name: Run ci
-      run: make ci
+    - name: Run github-ci
+      run: make github-ci
