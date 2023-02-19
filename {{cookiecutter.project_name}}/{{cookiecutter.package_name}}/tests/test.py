@@ -3,5 +3,6 @@
 
 from {{cookiecutter.package_name}} import utils
 
+
 def test():
     assert True
