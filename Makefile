@@ -120,7 +120,10 @@ bake:
 	 	rm -rf $(GENERATED_PROJECT)/* && \
 	 	mv .venv_backup $(GENERATED_PROJECT)/.venv || true
 	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
-	cd $(GENERATED_PROJECT) && rm -rf .git && git init && git add . && git commit -m initial
+	cd $(GENERATED_PROJECT) && \
+		git config --global user.email "you@example.com"  && \
+		git config --global user.name "Your Name"  && \
+  		rm -rf .git && git init && git add . && git commit -m initial
 
 unbake:
 	cd $(GENERATED_PROJECT) && git diff --cached > ../patch
