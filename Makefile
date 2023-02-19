@@ -124,5 +124,5 @@ bake:
 unbake:
 	cd $(GENERATED_PROJECT) && git diff --cached > ../patch
 	sed 's/template_spider_test_repo/{{cookiecutter.package_name}}/g' patch  > patch_fixed
-	git apply patch_fixed --directory \{\{cookiecutter.project_name\}\}
+	git apply patch_fixed --index --directory \{\{cookiecutter.project_name\}\}
 
