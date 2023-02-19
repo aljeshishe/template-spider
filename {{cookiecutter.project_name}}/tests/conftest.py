@@ -2,4 +2,4 @@
 
 # pylint: disable=unused-import
 
-from {{cookiecutter.package_name}}.tests.conftest import pytest_configure
+# from {{cookiecutter.package_name}}.tests.conftest import pytest_configure
