@@ -29,8 +29,6 @@ classifiers = [
 [tool.poetry.dependencies]
 
 python = "^{{cookiecutter.python_major_version}}.{{cookiecutter.python_minor_version}}"
-
-# TODO: Remove these and add your library's requirements
 click = "*"
 minilog = "*"
 requests = "^2.28.2"
