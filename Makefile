@@ -1,5 +1,5 @@
 SOURCE_FILES = Makefile cookiecutter.json {{cookiecutter.project_name}}/* {{cookiecutter.project_name}}/*/*
-GENERATED_PROJECT := template_spider_test_repo
+GENERATED_PROJECT := baked_template
 
 SHELL := /bin/bash
 
@@ -25,7 +25,7 @@ doctor:  ## Confirm system dependencies are available
 github-ci:
 	$(MAKE) ci-cleanup
 
-	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
+	poetry run cookiecutter . --no-input --overwrite-if-exists project_name=$(GENERATED_PROJECT)
 	make -C $(GENERATED_PROJECT) repo-init
 	$(MAKE) ci-wait-complete
 	$(MAKE) ci-check-conclusion
@@ -92,7 +92,7 @@ endif
 .PHONY: build
 build: install
 	cat cookiecutter.json
-	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
+	poetry run cookiecutter . --no-input --overwrite-if-exists project_name=$(GENERATED_PROJECT)
 
 # $(GENERATED_PROJECT): $(SOURCE_FILES)
 $(GENERATED_PROJECT):
@@ -119,14 +119,14 @@ bake:
 	 [[ -d $(GENERATED_PROJECT) ]] && mv $(GENERATED_PROJECT)/.venv .venv_backup && \
 	 	rm -rf $(GENERATED_PROJECT)/* && \
 	 	mv .venv_backup $(GENERATED_PROJECT)/.venv || true
-	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
+	poetry run cookiecutter . --no-input --overwrite-if-exists project_name=$(GENERATED_PROJECT)
 	cd $(GENERATED_PROJECT) && \
 		git config --global user.email "you@example.com"  && \
 		git config --global user.name "Your Name"  && \
   		rm -rf .git && git init && git add . && git commit -m initial
 
 unbake:
-	cd $(GENERATED_PROJECT) && git diff --cached > ../patch
-	sed 's/$(GENERATED_PROJECT)/{{cookiecutter.package_name}}/g' patch  > patch_fixed
-	git apply patch_fixed --index --directory \{\{cookiecutter.project_name\}\}
+	cd $(GENERATED_PROJECT) && git diff  > ../patch
+	sed 's/$(GENERATED_PROJECT)/{{cookiecutter.project_name}}/g' patch  > patch_fixed
+	git apply patch_fixed --directory \{\{cookiecutter.project_name\}\}
 

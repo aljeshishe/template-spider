@@ -7,11 +7,11 @@ import os
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from {{cookiecutter.package_name}} import spider
+from {{cookiecutter.project_name}} import spider
 
 
 def test_ok(tmp_path):
-    os.environ["SCRAPY_SETTINGS_MODULE"] = "{{cookiecutter.package_name}}.settings"
+    os.environ["SCRAPY_SETTINGS_MODULE"] = "{{cookiecutter.project_name}}.settings"
     settings = get_project_settings()
     path = tmp_path / "results.json"
     settings.set("FEEDS", {str(path): {"format": "json"}})

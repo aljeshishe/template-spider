@@ -18,13 +18,13 @@ Cookiecutter will ask you for some basic info (your name, project name, python p
 To generate project without asking questions, use the following command:
 
 ```
-cookiecutter gh:aljeshishe/template-scrapy --no-input github_repo=<github_repo>
+cookiecutter gh:aljeshishe/template-scrapy --no-input project_name=<project_name>
 ```
 
 Once created, run the code formatter to updates files based on your chosen names:
 
 ```
-cd <github_repo>
+cd <project_name>
 make repo-init      # create repo and push to git
 asdf install        # install all necessary tools
 poetry run          # install third party dependencies and run

@@ -1,4 +1,4 @@
-from {{cookiecutter.package_name}} import constants
+from {{cookiecutter.project_name}} import constants
 
 
 class State:

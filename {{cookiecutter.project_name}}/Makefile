@@ -1,5 +1,5 @@
 PROJECT := {{cookiecutter.project_name}}
-PACKAGE := {{cookiecutter.package_name}}
+PACKAGE := {{cookiecutter.project_name}}
 MODULES := $(wildcard $(PACKAGE)/*.py)
 
 SHELL := /bin/bash

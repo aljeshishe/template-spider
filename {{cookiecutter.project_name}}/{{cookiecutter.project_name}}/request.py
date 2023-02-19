@@ -5,8 +5,8 @@ import attr
 import rootpath
 import scrapy
 
-from {{cookiecutter.package_name}}.middlewares import errback
-from {{cookiecutter.package_name}}.state import State
+from {{cookiecutter.project_name}}.middlewares import errback
+from {{cookiecutter.project_name}}.state import State
 
 ROOT_PATH = Path(rootpath.detect(__file__))
 logger = logging.getLogger(__name__)

@@ -65,7 +65,7 @@ FEEDS = {
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 # SPIDER_MIDDLEWARES = {
-#    "{{cookiecutter.package_name}}.middlewares.LoggingDownloaderMiddleware": 543,
+#    "{{cookiecutter.project_name}}.middlewares.LoggingDownloaderMiddleware": 543,
 # }
 
 # Enable or disable downloader middlewares
@@ -74,7 +74,7 @@ DOWNLOADER_MIDDLEWARES = {
     "scrapy.downloadermiddlewares.retry.RetryMiddleware": None,
     "scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware": None,
     "scrapy.downloadermiddlewares.cookies.CookiesMiddleware": None,
-    "{{cookiecutter.package_name}}.middlewares.LoggingDownloaderMiddleware": 1000,
+    "{{cookiecutter.project_name}}.middlewares.LoggingDownloaderMiddleware": 1000,
 }
 REQUEST_RESPONSE_DEBUG = False
 REQUEST_RESPONSE_BODY_DEBUG = False

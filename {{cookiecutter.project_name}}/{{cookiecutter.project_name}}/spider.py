@@ -1,11 +1,11 @@
 import scrapy
 
-from {{cookiecutter.package_name}}.request import DestinationRequest
-from {{cookiecutter.package_name}}.state import State
+from {{cookiecutter.project_name}}.request import DestinationRequest
+from {{cookiecutter.project_name}}.state import State
 
 
 class Spider(scrapy.Spider):
-    name = "{{cookiecutter.package_name}}"
+    name = "{{cookiecutter.project_name}}"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
