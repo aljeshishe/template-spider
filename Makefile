@@ -115,14 +115,15 @@ template-ci:
 	$(MAKE) -C $(GENERATED_PROJECT) ci
 
 bake:
-	 [[ -d template_spider_test_repo ]] && mv template_spider_test_repo/.venv .venv_backup && \
-	 	rm -rf template_spider_test_repo/* && \
-	 	mv .venv_backup template_spider_test_repo/.venv || true
+	 # remove everything but .env (because it's slow to recreate
+	 [[ -d $(GENERATED_PROJECT) ]] && mv $(GENERATED_PROJECT)/.venv .venv_backup && \
+	 	rm -rf $(GENERATED_PROJECT)/* && \
+	 	mv .venv_backup $(GENERATED_PROJECT)/.venv || true
 	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
 	cd $(GENERATED_PROJECT) && rm -rf .git && git init && git add . && git commit -m initial
 
 unbake:
 	cd $(GENERATED_PROJECT) && git diff --cached > ../patch
-	sed 's/template_spider_test_repo/{{cookiecutter.package_name}}/g' patch  > patch_fixed
+	sed 's/$(GENERATED_PROJECT)/{{cookiecutter.package_name}}/g' patch  > patch_fixed
 	git apply patch_fixed --index --directory \{\{cookiecutter.project_name\}\}
 
