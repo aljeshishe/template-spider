@@ -42,10 +42,14 @@ class LoggingDownloaderMiddleware:
 
     def _sanitize(self, request: scrapy.Request):
         if "Content-Length" in request.headers:
-            log.warning("Dont pass Content-Length header, it will be calculated automatically")
+            log.warning(
+                "Dont pass Content-Length header, it will be calculated automatically"
+            )
 
         encoding = request.headers.get("Accept-Encoding", "").decode()
-        compression_enabled = any(tag in encoding for tag in ("gzip", "compress", "deflate", "br"))
+        compression_enabled = any(
+            tag in encoding for tag in ("gzip", "compress", "deflate", "br")
+        )
         if compression_enabled and self.enabled and self.body_debug:
             msg = "Body compression (Accept-Encoding=%s) and printing body is enabled. Removing header"
             log.warning(msg, encoding)
@@ -53,9 +57,10 @@ class LoggingDownloaderMiddleware:
 
 
 def response_httprepr(response: Response, body: bool = False) -> str:
-    """Return raw HTTP representation (as bytes) of the given response. This
-    is provided only for reference, since it's not the exact stream of bytes
-    that was received (that's not exposed by Twisted).
+    """Return raw HTTP representation (as bytes) of the given response.
+
+    This is provided only for reference, since it's not the exact stream of
+    bytes that was received (that's not exposed by Twisted).
     """
     values = [
         b"HTTP/1.1 ",
@@ -73,9 +78,9 @@ def response_httprepr(response: Response, body: bool = False) -> str:
 
 def request_httprepr(request: Request, body: bool = False) -> str:
     """Return the raw HTTP representation (as bytes) of the given request.
-    This is provided only for reference since it's not the actual stream of
-    bytes that will be send when performing the request (that's controlled
-    by Twisted).
+
+    This is provided only for reference since it's not the actual stream of bytes
+    that will be send when performing the request (that's controlled by Twisted).
     """
     parsed = urlparse_cached(request)
     path = urlunparse(("", "", parsed.path or "/", parsed.params, parsed.query, ""))
