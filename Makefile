@@ -114,13 +114,13 @@ clean-all: clean
 template-ci:
 	$(MAKE) -C $(GENERATED_PROJECT) ci
 
-start-dev:
+bake:
 	cd $(GENERATED_PROJECT) && find . ! -name '.venv' -delete
 	poetry run cookiecutter . --no-input --overwrite-if-exists github_repo=$(GENERATED_PROJECT)
 	cd $(GENERATED_PROJECT) && rm -rf .git && git init && git add . && git commit -m initial
 
-end-dev:
+unbake:
 	cd $(GENERATED_PROJECT) && git diff > ../patch
-	sed 's/template_spider_test_repo/{{cookiecutter.project_name}}/g' patch  > patch_fixed
+	sed 's/template_spider_test_repo/{{cookiecutter.package_name}}/g' patch  > patch_fixed
 	git apply patch_fixed --directory \{\{cookiecutter.project_name\}\}
 
